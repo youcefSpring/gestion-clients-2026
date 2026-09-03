@@ -31,16 +31,16 @@
     <div class="min-h-screen">
         @include('layouts.navigation')
 
-        <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
-            <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <main class="w-full p-[1cm]">
+            <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-slate-900">{{ $header ?? ($title ?? '') }}</h1>
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-900">{{ $header ?? ($title ?? '') }}</h1>
                     @isset($subheader)
-                        <p class="mt-1 text-sm text-slate-500">{{ $subheader }}</p>
+                        <p class="mt-1.5 text-base text-slate-500">{{ $subheader }}</p>
                     @endisset
                 </div>
                 @isset($actions)
-                    <div class="flex items-center gap-2">{{ $actions }}</div>
+                    <div class="flex items-center gap-3">{{ $actions }}</div>
                 @endisset
             </div>
 
@@ -48,7 +48,7 @@
         </main>
     </div>
 
-    <div id="toasts" class="fixed bottom-4 end-4 z-50 flex w-72 flex-col gap-2"></div>
+    <div id="toasts" class="fixed bottom-[1cm] end-[1cm] z-50 flex w-72 flex-col gap-2"></div>
     <x-confirm-dialog />
 </body>
 </html>

@@ -4,7 +4,7 @@
     </x-slot:actions>
 
     <x-card>
-        <div class="border-b border-slate-200 p-4">
+        <div class="border-b border-slate-200 bg-slate-50/70 p-5">
             <x-text-input type="search" id="customer-search" autocomplete="off"
                           :value="request('search')"
                           :placeholder="__('app.search_customers')" class="sm:max-w-sm" />

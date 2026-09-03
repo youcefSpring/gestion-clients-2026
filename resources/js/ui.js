@@ -85,6 +85,39 @@ export function debounce(callback, wait = 300) {
 }
 
 $(function () {
+    // WhatsApp opens in the same tab when the browser blocks the popup.
+    $(document).on('click', '[data-action=open-whatsapp]', function (event) {
+        event.preventDefault();
+
+        const digits = String($(this).data('digits') ?? '').replace(/\D+/g, '');
+
+        if (! digits) {
+            return;
+        }
+
+        const url = `https://wa.me/${digits}`;
+
+        if (! window.open(url, '_blank', 'noopener')) {
+            window.location.href = url;
+        }
+    });
+
+    // Desktop browsers often have no tel: handler, so the number is copied instead.
+    $(document).on('click', '[data-action=call-phone]', function (event) {
+        const digits = String($(this).data('digits') ?? '').replace(/\D+/g, '');
+
+        if (! digits) {
+            return;
+        }
+
+        if (navigator.clipboard?.writeText) {
+            event.preventDefault();
+            navigator.clipboard.writeText(`+${digits}`)
+                .then(() => toast(`+${digits}`))
+                .catch(() => { window.location.href = `tel:${digits}`; });
+        }
+    });
+
     $(document).on('click', '[data-modal-close]', function () {
         closeModal($(this).closest('[data-modal]').attr('id'));
     });

@@ -5,9 +5,9 @@
         </div>
     @endif
 
-    <div class="grid gap-6 lg:grid-cols-2">
-        <x-card class="p-6">
-            <h2 class="text-sm font-semibold text-slate-900">{{ __('app.profile_info') }}</h2>
+    <div class="grid gap-8 lg:grid-cols-2">
+        <x-card class="p-8">
+            <h2 class="text-lg font-semibold text-slate-900">{{ __('app.profile_info') }}</h2>
 
             <form method="POST" action="{{ route('profile.update') }}" class="mt-4 space-y-4">
                 @csrf
@@ -31,8 +31,8 @@
             </form>
         </x-card>
 
-        <x-card class="p-6">
-            <h2 class="text-sm font-semibold text-slate-900">{{ __('app.change_password') }}</h2>
+        <x-card class="p-8">
+            <h2 class="text-lg font-semibold text-slate-900">{{ __('app.change_password') }}</h2>
 
             <form method="POST" action="{{ route('profile.password') }}" class="mt-4 space-y-4">
                 @csrf

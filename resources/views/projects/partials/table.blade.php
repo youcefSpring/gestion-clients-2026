@@ -13,36 +13,61 @@
     </x-empty-state>
 @else
     <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse text-[15px] leading-6">
-            <thead class="bg-slate-100 text-xs uppercase tracking-wider text-slate-600">
+        <table class="min-w-full text-[15px] leading-6">
+            <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
                 <tr>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.customer') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.phone') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.project') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.description') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.status') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-start font-semibold">{{ __('app.date') }}</th>
-                    <th class="border border-slate-200 px-6 py-4 text-end font-semibold">{{ __('app.actions') }}</th>
+                    <th class="px-6 py-4 text-start font-semibold">{{ __('app.customer') }}</th>
+                    <th class="px-6 py-4 text-start font-semibold">{{ __('app.project') }}</th>
+                    <th class="px-6 py-4 text-start font-semibold">{{ __('app.description') }}</th>
+                    <th class="px-6 py-4 text-start font-semibold">{{ __('app.status') }}</th>
+                    <th class="px-6 py-4 text-start font-semibold">{{ __('app.date') }}</th>
+                    <th class="px-6 py-4 text-end font-semibold">{{ __('app.actions') }}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-slate-100">
                 @foreach ($projects as $project)
+                    @php($digits = \App\Support\Phone::international($project->customer->phone))
                     <tr data-project-row="{{ $project->id }}" data-row class="transition-colors {{ $project->status->rowClasses() }}">
-                        <td class="border border-slate-200 px-6 py-4 font-medium text-slate-900">{{ $project->customer->display_name }}</td>
-                        <td class="border border-slate-200 px-6 py-4 text-slate-600" dir="ltr">{{ $project->customer->phone }}</td>
-                        <td class="border border-slate-200 px-6 py-4 text-slate-900">{{ $project->display_name }}</td>
-                        <td class="max-w-xs border border-slate-200 px-6 py-4 text-slate-500">{{ Str::limit($project->description, 60) }}</td>
-                        <td class="border border-slate-200 px-6 py-4">
-                            <select class="rounded-full border-0 px-3 py-1.5 text-sm font-medium shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-slate-300 {{ $project->status->classes() }}"
+                        <td class="px-6 py-5">
+                            <div class="text-base font-semibold text-slate-900">{{ $project->customer->display_name }}</div>
+                            <div class="mt-0.5 text-xs text-slate-500" dir="ltr">{{ $project->customer->phone }}</div>
+                        </td>
+                        <td class="px-6 py-5 font-medium text-slate-800">{{ $project->display_name }}</td>
+                        <td class="max-w-sm px-6 py-5">
+                            <x-tag-list :text="$project->description" />
+                        </td>
+                        <td class="px-6 py-5">
+                            <select class="rounded-full border-0 px-3 py-1.5 text-sm font-semibold shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-slate-300 {{ $project->status->classes() }}"
                                     data-action="change-status" data-id="{{ $project->id }}">
                                 @foreach (\App\Enums\ProjectStatus::cases() as $status)
                                     <option value="{{ $status->value }}" @selected($project->status === $status)>{{ $status->label() }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td class="border border-slate-200 px-6 py-4 text-slate-500">{{ $project->created_at->format('Y-m-d') }}</td>
-                        <td class="border border-slate-200 px-6 py-4">
+                        <td class="px-6 py-5 text-slate-500">{{ $project->created_at->format('Y-m-d') }}</td>
+                        <td class="px-6 py-5">
                             <div class="flex items-center justify-end gap-2">
+                                <x-icon-button icon="eye" :label="__('app.view')"
+                                               data-action="view-project"
+                                               data-name="{{ $project->display_name }}"
+                                               data-customer="{{ $project->customer->display_name }}"
+                                               data-phone="{{ $project->customer->phone }}"
+                                               data-digits="{{ $digits }}"
+                                               data-status="{{ $project->status->label() }}"
+                                               data-description="{{ $project->description }}"
+                                               data-date="{{ $project->created_at->format('Y-m-d H:i') }}"
+                                               data-customer-url="{{ route('projects.index', ['customer' => $project->customer_id, 'show_archived' => 1]) }}" />
+                                @if ($digits !== '')
+                                    <a href="tel:{{ $digits }}" data-action="call-phone" data-digits="{{ $digits }}" title="{{ __('app.call') }}" aria-label="{{ __('app.call') }}"
+                                       class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-sky-200 text-sky-600 shadow-sm transition-colors hover:bg-sky-50">
+                                        <x-icon name="phone" class="h-[18px] w-[18px]" />
+                                    </a>
+                                    <a href="https://wa.me/{{ $digits }}" data-action="open-whatsapp" data-digits="{{ $digits }}" target="_blank" rel="noopener"
+                                       title="{{ __('app.whatsapp') }}" aria-label="{{ __('app.whatsapp') }}"
+                                       class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 text-emerald-600 shadow-sm transition-colors hover:bg-emerald-50">
+                                        <x-icon name="chat" class="h-[18px] w-[18px]" />
+                                    </a>
+                                @endif
                                 <x-icon-button icon="edit" :label="__('app.edit')"
                                                data-action="edit-project"
                                                data-id="{{ $project->id }}"
@@ -62,7 +87,7 @@
     </div>
 
     @if ($hidingArchived)
-        <p class="border-t border-slate-100 px-5 py-2 text-xs text-slate-400">{{ __('app.hidden_archived_hint') }}</p>
+        <p class="border-t border-slate-100 px-6 py-3 text-xs text-slate-400">{{ __('app.hidden_archived_hint') }}</p>
     @endif
 
     @if ($projects->hasPages())

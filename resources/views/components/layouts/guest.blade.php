@@ -8,13 +8,13 @@
     <title>{{ $title ?? __('app.app_name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10 text-slate-800 antialiased">
-    <div class="w-full max-w-sm">
+<body class="flex min-h-screen items-center justify-center bg-slate-50 p-[1cm] text-slate-800 antialiased">
+    <div class="w-full max-w-lg">
         <div class="mb-6 text-center">
-            <h1 class="text-xl font-semibold text-slate-900">{{ __('app.app_name') }}</h1>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">{{ __('app.app_name') }}</h1>
             <p class="mt-1 text-sm text-slate-500">{{ __('app.sign_in_subtitle') }}</p>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
             {{ $slot }}
         </div>
     </div>

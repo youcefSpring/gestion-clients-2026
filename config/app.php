@@ -93,6 +93,9 @@ return [
 
     'rtl_locales' => ['ar'],
 
+    // Default country dialling code used to build tel: and WhatsApp links.
+    'country_code' => env('COUNTRY_CODE', '216'),
+
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

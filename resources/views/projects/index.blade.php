@@ -4,7 +4,7 @@
     </x-slot:actions>
 
     <x-card>
-        <div class="flex flex-col gap-3 border-b border-slate-200 p-4 sm:flex-row sm:items-center">
+        <div class="flex flex-col gap-3 border-b border-slate-200 bg-slate-50/70 p-5 sm:flex-row sm:items-center">
             <x-text-input type="search" id="project-search" autocomplete="off"
                           :value="request('search')"
                           :placeholder="__('app.search_projects')" class="sm:max-w-sm" />
@@ -37,4 +37,5 @@
     </x-card>
 
     @include('projects.partials.form-modal')
+    @include('projects.partials.show-modal')
 </x-layouts.app>

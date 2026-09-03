@@ -151,6 +151,35 @@ $(function () {
         });
     });
 
+    $(document).on('click', '[data-action=view-project]', function () {
+        const data = $(this).data();
+        const digits = String(data.digits ?? '').replace(/\D+/g, '');
+        const $modal = $('#project-show-modal');
+
+        $modal.find('[data-show=name]').text(data.name ?? '');
+        $modal.find('[data-show=customer]').text(data.customer ?? '');
+        $modal.find('[data-show=phone]').text(data.phone ?? '');
+        $modal.find('[data-show=status]').text(data.status ?? '');
+        $modal.find('[data-show=date]').text(data.date ?? '');
+
+        const tags = String(data.description ?? '').split(/[,\n;]+/).map((tag) => tag.trim()).filter(Boolean);
+        const $tags = $modal.find('[data-show=tags]').empty();
+
+        if (tags.length) {
+            tags.forEach((tag) => $tags.append(
+                $('<span>', { class: 'inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 ring-1 ring-inset ring-slate-200', text: tag })
+            ));
+        } else {
+            $tags.append($('<span>', { class: 'text-sm text-slate-400', text: '—' }));
+        }
+
+        $modal.find('[data-show=customer-url]').attr('href', data.customerUrl ?? '#');
+        $modal.find('[data-show=call]').attr({ href: digits ? `tel:${digits}` : '#' }).data('digits', digits).toggleClass('hidden', ! digits);
+        $modal.find('[data-show=whatsapp]').attr({ href: digits ? `https://wa.me/${digits}` : '#' }).data('digits', digits).toggleClass('hidden', ! digits);
+
+        openModal('project-show-modal');
+    });
+
     $(document).on('click', '[data-action=delete-project]', function () {
         const id = $(this).data('id');
 

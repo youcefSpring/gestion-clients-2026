@@ -7,9 +7,9 @@
 @endphp
 
 <nav class="border-b border-slate-200 bg-white">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <div class="flex w-full items-center justify-between gap-4 px-[1cm] py-4">
         <div class="flex items-center gap-6">
-            <a href="{{ route('dashboard') }}" class="text-base font-semibold text-slate-900">
+            <a href="{{ route('dashboard') }}" class="text-lg font-bold tracking-tight text-slate-900">
                 {{ __('app.app_name') }}
             </a>
             <div class="hidden items-center gap-1 sm:flex">
